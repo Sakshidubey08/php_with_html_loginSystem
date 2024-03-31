@@ -19,7 +19,8 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     // $date = $_POST["date"];
     $exists = false;
     if(($password==$cpassword) && $exists==false){
-        $sql = "INSERT INTO `users` ( `username`, `email`, `password`, `date`) VALUES ( '$username', '$email', '$password', '2024-03-24 15:01:57');";
+        $hash= password_hash($password, PASSWORD_DEFAULT);
+        $sql = "INSERT INTO `users` ( `username`, `email`, `password`, `date`) VALUES ( '$username', '$email', '$hash', '2024-03-24 15:01:57');";
         $result = mysqli_query($conn,$sql);
         if($result){
            echo '

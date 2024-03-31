@@ -15,20 +15,30 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     $password = $_POST["password"];
 
       
-        $sql = "Select * from users where email= '$email' AND password ='$password'";
+        $sql = "Select * from users where email= '$email'";
         $result = mysqli_query($conn,$sql);
         $num= mysqli_num_rows($result);
         if($num==1){
-          $login =true;
-          echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
-          <strong>Success!</strong> You are Logged in.
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>';
-        header("location:welcome.php");
+          while($row=mysqli_fetch_assoc($result)){
+            if(password_verify($password,$row['password'])){
+            $login =true;
+            echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Success!</strong> You are Logged in.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>';
+           header("location:welcome.php");
+            }
+            else{
+              echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+              <strong>Error!</strong>Invalid Credentials.
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>';
+            }
+          }
         }
     else{
         echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <strong></strong>Invalid Credentials.
+        <strong>Error!</strong>Invalid Credentials.
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>';
     }
